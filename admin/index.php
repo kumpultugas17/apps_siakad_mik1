@@ -48,7 +48,7 @@ if (!isset($_SESSION['email'])) {
                         Data Master
                      </a>
                      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="matkul/index.php">Mata Kuliah</a></li>
+                        <li><a class="dropdown-item" href="matakuliah/index.php">Mata Kuliah</a></li>
                         <li><a class="dropdown-item" href="jurusan/index.php">Jurusan</a></li>
                         <li><a class="dropdown-item" href="kelas/index.php">Kelas</a></li>
                      </ul>
@@ -64,6 +64,7 @@ if (!isset($_SESSION['email'])) {
                   <div class="dropdown">
                      <a class="text-white dropdown-toggle nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="../assets/image/avatar/1.jpg" class="rounded-circle" height="25" alt="avatar">
+                        <?= $_SESSION['nama']; ?>
                      </a>
                      <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#">Profil</a></li>
@@ -76,7 +77,24 @@ if (!isset($_SESSION['email'])) {
                   </div>
                </div>
             </div>
+         </div>
       </nav>
+
+      <div class="container pt-4">
+         <div class="row">
+            <div class="col-12">
+               <div class="card rounded-3 border-0">
+                  <div class="card-body">
+                     <div class="breadcrumb mb-0">
+                        <a href="index.php" class="nav-link breadcrumb-item active fw-bold fs-6 text-secondary">
+                           Dashboard
+                        </a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
    </header>
 
    Konten .... Konten
