@@ -17,6 +17,10 @@ if (!isset($_SESSION['email'])) {
    <title>DASHBOARD</title>
    <!-- Bootstrap -->
    <link rel="stylesheet" href="../../assets/css/bootstrap.css">
+   <!-- Icon -->
+   <link rel="stylesheet" href="../../assets/icon/bootstrap-icons.css">
+   <!-- SweetAlert -->
+   <link rel="stylesheet" href="../../plugins/extensions/sweetalert2/sweetalert2.css">
    <style>
       body {
          background-color: #f2f7ff;
@@ -106,7 +110,7 @@ if (!isset($_SESSION['email'])) {
          <div class="col-sm-12 col-md-4 col-lg-4">
             <div class="card p-3 border-0 rounded-4">
                <div class="card-body px-1">
-                  <form action="act_create.php" method="post">
+                  <form action="insert.php" method="POST">
                      <div class="mb-3">
                         <label for="kode_jurusan" class="form-label">Kode Jurusan</label>
                         <input type="text" name="kode_jurusan" id="kode_jurusan" class="form-control" placeholder="Masukkan kode jurusan">
@@ -154,9 +158,9 @@ if (!isset($_SESSION['email'])) {
                               <td class="text center"><?= $no++ ?></td>
                               <td><?= $data['kode_jurusan'] ?></td>
                               <td><?= $data['nama_jurusan'] ?></td>
-                              <td class="text-center"><?= $data['status'] == '1' ? '<span class="badge text-bg-success">Aktif</span>' : '<span class="badge text-bg-danger">Tidak Aktif</span>' ?></td>
+                              <td class="text-center"><?= $data['status_jurusan'] == '1' ? '<span class="badge text-bg-success">Aktif</span>' : '<span class="badge text-bg-danger">Tidak Aktif</span>' ?></td>
                               <td class="text-center">
-                                 <button type="button" class="btn btn-sm btn-warning">
+                                 <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#edit<?= $data['id_jur'] ?>">
                                     <i class="bi bi-pencil-square"></i>
                                  </button>
                                  <button class="btn btn-sm btn-danger">
@@ -164,6 +168,43 @@ if (!isset($_SESSION['email'])) {
                                  </button>
                               </td>
                            </tr>
+                           <!-- Modal Edit -->
+                           <div class="modal fade" id="edit<?= $data['id_jur'] ?>" data-bs-backdrop="static" data-bs-keyword="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                              <div class="modal-dialog">
+                                 <div class="modal-content">
+                                    <div class="modal-header">
+                                       <h5 class="modal-title" id="staticBackdropLabel">
+                                          Edit Jurusan
+                                       </h5>
+                                       <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                       <form action="update.php" method="POST">
+                                          <div class="mb-3">
+                                             <label for="kode_jurusan" class="form-label">Kode Jurusan</label>
+                                             <input type="hidden" name="id_jur" value="<?= $data['id_jur'] ?>">
+                                             <input type="text" name="kode_jurusan" id="kode_jurusan" class="form-control" value="<?= $data['kode_jurusan'] ?>">
+                                          </div>
+                                          <div class="mb-3">
+                                             <label for="nama_jurusan" class="form-label">Nama Jurusan</label>
+                                             <input type="text" name="nama_jurusan" id="nama_jurusan" class="form-control" value="<?= $data['nama_jurusan'] ?>">
+                                          </div>
+                                          <div class="mb-3">
+                                             <label for="status" class="form-label">Status</label>
+                                             <select name="status" id="status" class="form-select">
+                                                <option selected disabled>Pilih Jurusan</option>
+                                                <option <?= $data['status_jurusan'] == '1' ? 'selected' : '' ?> value="1">Aktif</option>
+                                                <option <?= $data['status_jurusan'] == '0' ? 'selected' : '' ?> value="0">Tidak Aktif</option>
+                                             </select>
+                                          </div>
+                                          <button type="submit" name="simpan" class="btn btn-sm btn-primary">Simpan</button>
+                                          <button type="reset" class="btn btn-sm btn-secondary">Reset</button>
+                                       </form>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <!-- End -->
                         <?php
                         endforeach
                         ?>
@@ -177,6 +218,37 @@ if (!isset($_SESSION['email'])) {
 
    <!-- Bootstrap JS -->
    <script src="../../assets/js/bootstrap.bundle.js"></script>
+   <!-- SweetAlert JS -->
+   <script src="../../plugins/extensions/sweetalert2/sweetalert2.all.js"></script>
+
+   <!-- Pesan Insert -->
+
+   <!-- Pesan Update -->
+   <?php if (isset($_SESSION['success_update'])) { ?>
+      <script>
+         Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "<?= $_SESSION['success_update'] ?>",
+            showConfirmButton: false,
+            timer: 3000
+         })
+      </script>
+   <?php unset($_SESSION['success_update']); } ?>
+
+   <?php if (isset($_SESSION['error_update'])) { ?>
+      <script>
+         Swal.fire({
+            position: "top-end",
+            icon: "error",
+            title: "<?= $_SESSION['error_update'] ?>",
+            showConfirmButton: false,
+            timer: 3000
+         })
+      </script>
+   <?php unset($_SESSION['error_update']); } ?>
+
+   <!-- Pesan Delete -->
 </body>
 
 </html>

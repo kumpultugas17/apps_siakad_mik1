@@ -10,8 +10,14 @@ if (isset($_POST['simpan'])) {
 
    // cek apakah data berhasil masuk ke database
    if ($sql) {
+      session_start();
+      $_SESSION['success_insert'] = 'Data berhasil ditambahkan!';
       header('location:index.php');
    } else {
-      echo 'data gagal ditambahkan!';
+      session_start();
+      $_SESSION['error_insert'] = 'Data gagal ditambahkan!';
+      header('location:index.php');
    }
+} else {
+   header('location:index.php');
 }
