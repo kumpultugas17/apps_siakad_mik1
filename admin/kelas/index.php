@@ -95,7 +95,7 @@ if (!isset($_SESSION['email'])) {
                            Dashboard
                         </a>
                         <a href="index.php" class="nav-link breadcrumb-item active fw-bold fs-6 text-secondary">
-                           Jurusan
+                           Kelas
                         </a>
                      </div>
                   </div>
@@ -112,20 +112,16 @@ if (!isset($_SESSION['email'])) {
                <div class="card-body px-1">
                   <form action="insert.php" method="POST">
                      <div class="mb-3">
-                        <label for="kode_jurusan" class="form-label">Kode Jurusan</label>
-                        <input type="text" name="kode_jurusan" id="kode_jurusan" class="form-control" placeholder="Masukkan kode jurusan">
+                        <label for="nama_kelas" class="form-label">Nama Kelas</label>
+                        <input type="text" name="nama_kelas" id="nama_kelas" class="form-control" placeholder="Masukkan nama kelas">
                      </div>
                      <div class="mb-3">
-                        <label for="nama_jurusan" class="form-label">Nama Jurusan</label>
-                        <input type="text" name="nama_jurusan" id="nama_jurusan" class="form-control" placeholder="Masukkan nama jurusan">
+                        <label for="jumlah_mhs" class="form-label">Jumlah Mahasiswa</label>
+                        <input type="text" name="jumlah_mhs" id="jumlah_mhs" class="form-control" placeholder="Masukkan jumlah mahasiswa">
                      </div>
                      <div class="mb-3">
-                        <label for="status" class="form-label">Status</label>
-                        <select name="status" id="status" class="form-select">
-                           <option selected disabled>Pilih Jurusan</option>
-                           <option value="1">Aktif</option>
-                           <option value="0">Tidak Aktif</option>
-                        </select>
+                        <label for="keterangan" class="form-label">Keterangan</label>
+                        <input type="text" name="keterangan" id="keterangan" class="form-control" placeholder="Masukkan keterangan">
                      </div>
                      <button type="submit" name="simpan" class="btn btn-sm btn-primary">Simpan</button>
                      <button type="reset" class="btn btn-sm btn-secondary">Reset</button>
@@ -140,9 +136,9 @@ if (!isset($_SESSION['email'])) {
                      <thead class="align-middle table-dark">
                         <tr>
                            <th class="text-center">No</th>
-                           <th>Kode Jurusan</th>
-                           <th>Nama Jurusan</th>
-                           <th class="text-center">Status</th>
+                           <th>Kelas</th>
+                           <th>Jumlah Mahasiswa</th>
+                           <th>Keterangan</th>
                            <th class="text-center">Aksi</th>
                         </tr>
                      </thead>
@@ -151,30 +147,30 @@ if (!isset($_SESSION['email'])) {
                         require_once '../../config.php';
 
                         $no = 1;
-                        $query = $conn->query("SELECT * FROM jurusan");
+                        $query = $conn->query("SELECT * FROM kelas");
                         foreach ($query as $data) :
                         ?>
                            <tr>
                               <td class="text center"><?= $no++ ?></td>
-                              <td><?= $data['kode_jurusan'] ?></td>
-                              <td><?= $data['nama_jurusan'] ?></td>
-                              <td class="text-center"><?= $data['status_jurusan'] == '1' ? '<span class="badge text-bg-success">Aktif</span>' : '<span class="badge text-bg-danger">Tidak Aktif</span>' ?></td>
+                              <td><?= $data['nama_kls'] ?></td>
+                              <td><?= $data['jumlah_mhs'] ?></td>
+                              <td><?= $data['keterangan'] ?></td>
                               <td class="text-center">
-                                 <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#edit<?= $data['id_jur'] ?>">
+                                 <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#edit<?= $data['id_kls'] ?>">
                                     <i class="bi bi-pencil-square"></i>
                                  </button>
-                                 <button class="btn btn-sm btn-danger" onclick="confirmDelete('delete.php?id=<?= $data['id_jur'] ?>')">
+                                 <button class="btn btn-sm btn-danger" onclick="confirmDelete('delete.php?id=<?= $data['id_kls'] ?>')">
                                     <i class="bi bi-trash3-fill"></i>
                                  </button>
                               </td>
                            </tr>
                            <!-- Modal Edit -->
-                           <div class="modal fade" id="edit<?= $data['id_jur'] ?>" data-bs-backdrop="static" data-bs-keyword="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                           <div class="modal fade" id="edit<?= $data['id_kls'] ?>" data-bs-backdrop="static" data-bs-keyword="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                               <div class="modal-dialog">
                                  <div class="modal-content">
                                     <div class="modal-header">
                                        <h5 class="modal-title" id="staticBackdropLabel">
-                                          Edit Jurusan
+                                          Edit Kelas
                                        </h5>
                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                     </div>

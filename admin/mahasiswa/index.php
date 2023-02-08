@@ -15,6 +15,8 @@ if (!isset($_SESSION['email'])) {
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>DASHBOARD</title>
+   <!-- DataTable -->
+   <link rel="stylesheet" href="../../plugins/extensions/dataTables/datatables.min.css">
    <!-- Bootstrap -->
    <link rel="stylesheet" href="../../assets/css/bootstrap.css">
    <!-- Icon -->
@@ -29,6 +31,18 @@ if (!isset($_SESSION['email'])) {
 
       .bg-navbar {
          background-color: #435ebe;
+      }
+
+      .btn-create {
+         background-color: #0d6efd;
+         color: #fff;
+         border-color: #0d6efd;
+      }
+
+      .btn-create:hover {
+         background-color: #0b5ed7;
+         color: #fff;
+         border-color: #0b5ed7;
       }
    </style>
 </head>
@@ -95,7 +109,7 @@ if (!isset($_SESSION['email'])) {
                            Dashboard
                         </a>
                         <a href="index.php" class="nav-link breadcrumb-item active fw-bold fs-6 text-secondary">
-                           Jurusan
+                           Mahasiswa
                         </a>
                      </div>
                   </div>
@@ -106,42 +120,21 @@ if (!isset($_SESSION['email'])) {
    </header>
 
    <main class="container">
-      <div class="row my-4 gap-sm-4 gap-md-0 gap-lg-0">
-         <div class="col-sm-12 col-md-4 col-lg-4">
+      <div class="row my-4">
+         <div class="col-12">
             <div class="card p-3 border-0 rounded-4">
                <div class="card-body px-1">
-                  <form action="insert.php" method="POST">
-                     <div class="mb-3">
-                        <label for="kode_jurusan" class="form-label">Kode Jurusan</label>
-                        <input type="text" name="kode_jurusan" id="kode_jurusan" class="form-control" placeholder="Masukkan kode jurusan">
-                     </div>
-                     <div class="mb-3">
-                        <label for="nama_jurusan" class="form-label">Nama Jurusan</label>
-                        <input type="text" name="nama_jurusan" id="nama_jurusan" class="form-control" placeholder="Masukkan nama jurusan">
-                     </div>
-                     <div class="mb-3">
-                        <label for="status" class="form-label">Status</label>
-                        <select name="status" id="status" class="form-select">
-                           <option selected disabled>Pilih Jurusan</option>
-                           <option value="1">Aktif</option>
-                           <option value="0">Tidak Aktif</option>
-                        </select>
-                     </div>
-                     <button type="submit" name="simpan" class="btn btn-sm btn-primary">Simpan</button>
-                     <button type="reset" class="btn btn-sm btn-secondary">Reset</button>
-                  </form>
-               </div>
-            </div>
-         </div>
-         <div class="col-sm-12 col-md-8 col-lg-8">
-            <div class="card p-3 border-0 rounded-4">
-               <div class="card-body px-1">
-                  <table class="table table-striped">
+                  <table class="table table-striped" id="dataMhs">
                      <thead class="align-middle table-dark">
                         <tr>
                            <th class="text-center">No</th>
-                           <th>Kode Jurusan</th>
-                           <th>Nama Jurusan</th>
+                           <th>NIM</th>
+                           <th>Nama Lengkap</th>
+                           <th>Jenis Kelamin</th>
+                           <th>Agama</th>
+                           <th>Telepon</th>
+                           <th>Email</th>
+                           <th>Tahun Akademik</th>
                            <th class="text-center">Status</th>
                            <th class="text-center">Aksi</th>
                         </tr>
@@ -151,19 +144,32 @@ if (!isset($_SESSION['email'])) {
                         require_once '../../config.php';
 
                         $no = 1;
-                        $query = $conn->query("SELECT * FROM jurusan");
+                        $query = $conn->query("SELECT * FROM mahasiswa ORDER BY created_at DESC");
                         foreach ($query as $data) :
+                           // Kondisi untuk status mahasiswa
+                           if ($data['status'] == 2) {
+                              $status = "<span class='badge text-bg-success'>Lulus</span>";
+                           } elseif ($data['status'] == 1) {
+                              $status = "<span class='badge text-bg-primary'>Aktif</span>";
+                           } else {
+                              $status = "<span class='badge text-bg-danger'>Tidak Aktif</span>";
+                           }
                         ?>
                            <tr>
                               <td class="text center"><?= $no++ ?></td>
-                              <td><?= $data['kode_jurusan'] ?></td>
-                              <td><?= $data['nama_jurusan'] ?></td>
-                              <td class="text-center"><?= $data['status_jurusan'] == '1' ? '<span class="badge text-bg-success">Aktif</span>' : '<span class="badge text-bg-danger">Tidak Aktif</span>' ?></td>
+                              <td><?= $data['nim'] ?></td>
+                              <td><?= $data['nama'] ?></td>
+                              <td><?= $data['jk'] == 'l' ? 'Laki-laki' : 'Perempuan' ?></td>
+                              <td><?= $data['agama'] ?></td>
+                              <td><?= $data['telp'] ?></td>
+                              <td><?= $data['email'] ?></td>
+                              <td><?= $data['tahun_akademik'] ?></td>
+                              <td><?= $status ?></td>
                               <td class="text-center">
-                                 <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#edit<?= $data['id_jur'] ?>">
+                                 <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#edit<?= $data['id_mhs'] ?>">
                                     <i class="bi bi-pencil-square"></i>
                                  </button>
-                                 <button class="btn btn-sm btn-danger" onclick="confirmDelete('delete.php?id=<?= $data['id_jur'] ?>')">
+                                 <button class="btn btn-sm btn-danger" onclick="confirmDelete('delete.php?id=<?= $data['id_mhs'] ?>')">
                                     <i class="bi bi-trash3-fill"></i>
                                  </button>
                               </td>
@@ -220,6 +226,35 @@ if (!isset($_SESSION['email'])) {
    <script src="../../assets/js/bootstrap.bundle.js"></script>
    <!-- SweetAlert JS -->
    <script src="../../plugins/extensions/sweetalert2/sweetalert2.all.js"></script>
+   <!-- DataTables -->
+   <script src="../../plugins/extensions/dataTables/datatables.min.js"></script>
+   <script>
+      $(document).ready(function() {
+         let tableMhs = $('#dataMhs').DataTable({
+            lengthChange: false,
+            buttons: [{
+                  className: 'btn-create btn-sm',
+                  text: 'Tambah',
+                  action: function(e) {
+                     window.location.href = 'create.php'
+                  }
+               },
+               {
+                  className: 'btn-success btn-sm',
+                  extend: 'excel',
+                  text: 'Excel'
+               },
+               {
+                  className: 'btn-danger btn-sm',
+                  extend: 'pdf',
+                  text: 'PDF'
+               }
+            ]
+         });
+         tableMhs.buttons().container()
+            .appendTo('#dataMhs_wrapper .col-md-6:eq(0)');
+      });
+   </script>
 
    <!-- Konfirmasi Delete -->
    <script>
