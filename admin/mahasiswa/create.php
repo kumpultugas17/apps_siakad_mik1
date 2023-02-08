@@ -111,11 +111,11 @@ if (!isset($_SESSION['email'])) {
                   <form class="row g-3" action="insert.php" method="POST">
                      <div class="col-md-3">
                         <label for="nim" class="form-label">NIM</label>
-                        <input type="text" class="form-control" id="nim" name="nim" placeholder="Masukkan NIM Anda" required>
+                        <input type="text" class="form-control" id="nim" name="nim" placeholder="Masukkan NIM Anda">
                      </div>
                      <div class="col-md-6">
                         <label for="nama_lengkap" class="form-label">Nama Lengkap</label>
-                        <input type="text" class="form-control" id="nama_lengkap" name="nama_lengkap" placeholder="Masukkan Nama Lengkap" required>
+                        <input type="text" class="form-control" id="nama_lengkap" name="nama_lengkap" placeholder="Masukkan Nama Lengkap">
                      </div>
                      <div class="col-md-3">
                         <label for="jk" class="form-label">Jenis Kelamin</label>
@@ -139,45 +139,52 @@ if (!isset($_SESSION['email'])) {
                      </div>
                      <div class="col-md-5">
                         <label for="tempat_lahir" class="form-label">Tempat Lahir</label>
-                        <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" placeholder="Masukkan Tempat Lahir" required>
+                        <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" placeholder="Masukkan Tempat Lahir">
                      </div>
                      <div class="col-md-3">
                         <label for="tgl_lahir" class="form-label">Tanggal Lahir</label>
-                        <input type="date" class="form-control" id="tgl_lahir" name="tgl_lahir" placeholder="Masukkan Tanggal Lahir" required>
+                        <input type="date" class="form-control" id="tgl_lahir" name="tgl_lahir" placeholder="Masukkan Tanggal Lahir">
                      </div>
                      <div class="col-12">
                         <label for="alamat" class="form-label">Alamat Lengkap</label>
-                        <input type="text" class="form-control" id="alamat" name="alamat" placeholder="Masukkan Alamat Lengkap" required>
+                        <input type="text" class="form-control" id="alamat" name="alamat" placeholder="Masukkan Alamat Lengkap">
                      </div>
                      <div class="col-md-4">
                         <label for="telepon" class="form-label">Nomor Telepon</label>
-                        <input type="number" class="form-control" id="telepon" name="telepon" placeholder="Masukkan Nomor Telepon" required>
+                        <input type="number" class="form-control" id="telepon" name="telepon" placeholder="Masukkan Nomor Telepon">
                      </div>
                      <div class="col-md-4">
                         <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Masukkan Nomor Email" required>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Masukkan Nomor Email">
                      </div>
                      <div class="col-md-4">
                         <label for="telepon_ortu" class="form-label">No. telepon_ortu Orang Tua</label>
-                        <input type="number" class="form-control" id="telepon_ortu" name="telepon_ortu" placeholder="Masukkan Nomor Telepon Orang Tua" required>
+                        <input type="number" class="form-control" id="telepon_ortu" name="telepon_ortu" placeholder="Masukkan Nomor Telepon Orang Tua">
                      </div>
                      <div class="col-md-6">
                         <label for="nama_ayah" class="form-label">Nama Ayah</label>
-                        <input type="text" class="form-control" id="nama_ayah" name="nama_ayah" placeholder="Masukkan Nama Ayah" required>
+                        <input type="text" class="form-control" id="nama_ayah" name="nama_ayah" placeholder="Masukkan Nama Ayah">
                      </div>
                      <div class="col-md-6">
                         <label for="nama_ibu" class="form-label">Nama Ibu</label>
-                        <input type="text" class="form-control" id="nama_ibu" name="nama_ibu" placeholder="Masukkan Nama Ibu" required>
+                        <input type="text" class="form-control" id="nama_ibu" name="nama_ibu" placeholder="Masukkan Nama Ibu">
                      </div>
                      <div class="col-md-5">
                         <label for="jurusan" class="form-label">Jurusan</label>
                         <select id="jurusan" class="form-select" name="jurusan">
                            <option selected disabled>Pilih...</option>
+                           <?php
+                           require_once '../../config.php';
+                           $jur = $conn->query("SELECT * FROM jurusan");
+                           foreach ($jur as $j) :
+                           ?>
+                              <option value="<?= $j['id_jur'] ?>"><?= $j['nama_jurusan'] ?></option>
+                           <?php endforeach ?>
                         </select>
                      </div>
                      <div class="col-md-3">
                         <label for="tahun_akademik" class="form-label">Tahun Akademik</label>
-                        <input type="number" class="form-control" id="tahun_akademik" name="tahun_akademik" placeholder="Contoh 2020" required>
+                        <input type="number" class="form-control" id="tahun_akademik" name="tahun_akademik" placeholder="Contoh 2020">
                      </div>
                      <div class="col-md-4">
                         <label for="status" class="form-label">Status</label>
@@ -189,7 +196,7 @@ if (!isset($_SESSION['email'])) {
                         </select>
                      </div>
                      <div class="col-12">
-                        <button type="submit" class="btn btn-primary" name="submit">Simpan</button>
+                        <button type="submit" class="btn btn-primary" name="simpan">Simpan</button>
                         <a href="index.php" class="btn btn-secondary">Batal</a>
                      </div>
                   </form>

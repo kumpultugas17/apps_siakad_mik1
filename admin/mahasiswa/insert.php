@@ -1,21 +1,22 @@
 <?php
 if (isset($_POST['simpan'])) {
    require_once '../../config.php';
-   $kode_jurusan = $_POST['kode_jurusan']; //didapat dari name form
-   $nama_jurusan = $_POST['nama_jurusan']; //didapat dari name form
-   $status = $_POST['status']; //didapat dari name form
+   $nim = $_POST['nim'];
+   $nama_lengkap = $_POST['nama_lengkap'];
+   $jk = $_POST['jk'];
+   $jurusan = $_POST['jurusan'];
 
    // proses insert
-   $sql = $conn->query("INSERT INTO jurusan (kode_jurusan, nama_jurusan, status_jurusan) VALUES ('$kode_jurusan', '$nama_jurusan', '$status')");
+   $sql = $conn->query("INSERT INTO mahasiswa (nim, nama, jk, jurusan_id) VALUES ('$nim', '$nama_lengkap', '$jk', '$jurusan')");
 
    // cek apakah data berhasil masuk ke database
    if ($sql) {
       session_start();
-      $_SESSION['success_insert'] = 'Data berhasil ditambahkan!';
+      $_SESSION['success_insert'] = 'Mahasiswa baru berhasil ditambahkan!';
       header('location:index.php');
    } else {
       session_start();
-      $_SESSION['error_insert'] = 'Data gagal ditambahkan!';
+      $_SESSION['error_insert'] = 'Gagal menambahkan mahasiswa baru!';
       header('location:index.php');
    }
 } else {
