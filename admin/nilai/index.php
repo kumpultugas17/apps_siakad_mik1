@@ -1,10 +1,18 @@
 <?php
+require_once '../../config.php';
 session_start();
 if (!isset($_SESSION['email'])) {
    echo "<script>
       alert('Anda belum login, silahkan login dahulu!'); window.location.href='../login.php';
    </script>";
 }
+
+// Query data mahasiswa
+$mahasiswa = $conn->query("SELECT id_mhs, nama FROM mahasiswa");
+// Query data kelas
+$kelas = $conn->query("SELECT id_kls, nama_kls FROM kelas");
+// Query data matakuliah
+$mata_kuliah = $conn->query("SELECT id_matkul, nama_matkul FROM mata_kuliah");
 ?>
 
 <!DOCTYPE html>
@@ -119,6 +127,65 @@ if (!isset($_SESSION['email'])) {
       </div>
    </header>
 
+   <!-- Modal -->
+   <div class="modal fade" id="modalTambah" tabindex="-1" aria-labelledby="modalTambahLabel" aria-hidden="true">
+      <div class="modal-dialog">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h1 class="modal-title fs-5" id="modalTambahLabel">Modal Tambah Nilai</h1>
+               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="insert.php" method="post">
+               <div class="modal-body">
+                  <div class="mb-2">
+                     <label for="mhs_id" class="form-label">Nama Mahasiswa</label>
+                     <select name="mhs_id" id="mhs_id" class="form-select">
+                        <option disabled selected hidden>Pilih...</option>
+                        <?php foreach ($mahasiswa as $mhs) : ?>
+                           <option value="<?= $mhs['id_mhs'] ?>"><?= $mhs['nama'] ?></option>
+                        <?php endforeach ?>
+                     </select>
+                  </div>
+                  <div class="mb-2">
+                     <label for="kls_id" class="form-label">Kelas</label>
+                     <select name="kls_id" id="kls_id" class="form-select">
+                        <option disabled selected hidden>Pilih...</option>
+                        <?php foreach ($kelas as $kls) : ?>
+                           <option value="<?= $kls['id_kls'] ?>"><?= $kls['nama_kls'] ?></option>
+                        <?php endforeach ?>
+                     </select>
+                  </div>
+                  <div class="mb-2">
+                     <label for="matkul_id" class="form-label">Matakuliah</label>
+                     <select name="matkul_id" id="matkul_id" class="form-select">
+                        <option disabled selected hidden>Pilih...</option>
+                        <?php foreach ($mata_kuliah as $matkul) : ?>
+                           <option value="<?= $matkul['id_matkul'] ?>"><?= $matkul['nama_matkul'] ?></option>
+                        <?php endforeach ?>
+                     </select>
+                  </div>
+                  <div class="mb-2">
+                     <label for="nilai_tugas" class="form-label">Nilai Tugas</label>
+                     <input type="number" class="form-control" name="nilai_tugas" id="nilai_tugas">
+                  </div>
+                  <div class="mb-2">
+                     <label for="nilai_uts" class="form-label">Nilai UTS</label>
+                     <input type="number" class="form-control" name="nilai_uts" id="nilai_uts">
+                  </div>
+                  <div class="mb-2">
+                     <label for="nilai_uas" class="form-label">Nilai UAS</label>
+                     <input type="number" class="form-control" name="nilai_uas" id="nilai_uas">
+                  </div>
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary" name="simpan">Save changes</button>
+               </div>
+            </form>
+         </div>
+      </div>
+   </div>
+
    <main class="container">
       <div class="row my-4">
          <div class="col-12">
@@ -143,15 +210,15 @@ if (!isset($_SESSION['email'])) {
                         require_once '../../config.php';
 
                         $no = 1;
-                        $query = $conn->query("SELECT * FROM nilai ORDER BY created_at DESC");
+                        $query = $conn->query("SELECT * FROM nilai n INNER JOIN mahasiswa m ON n.mhs_id = m.id_mhs INNER JOIN kelas k ON n.kls_id = k.id_kls INNER JOIN mata_kuliah mk ON n.matkul_id = mk.id_matkul ORDER BY n.created_at DESC");
                         foreach ($query as $data) :
                         ?>
                            <tr>
                               <td class="text center"><?= $no++ ?></td>
-                              <td><?= $data['mhs_id'] ?></td>
-                              <td><?= $data['mhs_id'] ?></td>
-                              <td><?= $data['kls_id'] ?></td>
-                              <td><?= $data['matkul_id'] ?></td>
+                              <td><?= $data['nim'] ?></td>
+                              <td><?= $data['nama'] ?></td>
+                              <td><?= $data['nama_kls'] ?></td>
+                              <td><?= $data['nama_matkul'] ?></td>
                               <td><?= $data['nilai_tugas'] ?></td>
                               <td><?= $data['nilai_uts'] ?></td>
                               <td><?= $data['nilai_uas'] ?></td>
@@ -189,7 +256,7 @@ if (!isset($_SESSION['email'])) {
                   className: 'btn-create btn-sm',
                   text: 'Tambah',
                   action: function(e) {
-                     window.location.href = 'create.php'
+                     $('#modalTambah').modal('show')
                   }
                },
                {
