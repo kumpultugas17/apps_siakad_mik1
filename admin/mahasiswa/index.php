@@ -128,6 +128,7 @@ if (!isset($_SESSION['email'])) {
                      <thead class="align-middle table-dark">
                         <tr>
                            <th class="text-center">No</th>
+                           <th>Avatar</th>
                            <th>NIM</th>
                            <th>Nama Lengkap</th>
                            <th>Jenis Kelamin</th>
@@ -157,6 +158,9 @@ if (!isset($_SESSION['email'])) {
                         ?>
                            <tr>
                               <td class="text center"><?= $no++ ?></td>
+                              <td>
+                                 <img src="../../assets/image/avatar/<?= $data['avatar'] == null ? '2.jpg' : $data['avatar'] ?>" width="40px">
+                              </td>
                               <td><?= $data['nim'] ?></td>
                               <td><?= $data['nama'] ?></td>
                               <td><?= $data['jk'] == 'l' ? 'Laki-laki' : 'Perempuan' ?></td>
@@ -166,51 +170,14 @@ if (!isset($_SESSION['email'])) {
                               <td><?= $data['tahun_akademik'] ?></td>
                               <td><?= $status ?></td>
                               <td class="text-center">
-                                 <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#edit<?= $data['id_mhs'] ?>">
+                                 <a href="edit.php?id=<?= $data['id_mhs']; ?>" class="btn btn-sm btn-warning">
                                     <i class="bi bi-pencil-square"></i>
-                                 </button>
+                                 </a>
                                  <button class="btn btn-sm btn-danger" onclick="confirmDelete('delete.php?id=<?= $data['id_mhs'] ?>')">
                                     <i class="bi bi-trash3-fill"></i>
                                  </button>
                               </td>
                            </tr>
-                           <!-- Modal Edit -->
-                           <div class="modal fade" id="edit<?= $data['id_jur'] ?>" data-bs-backdrop="static" data-bs-keyword="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                              <div class="modal-dialog">
-                                 <div class="modal-content">
-                                    <div class="modal-header">
-                                       <h5 class="modal-title" id="staticBackdropLabel">
-                                          Edit Jurusan
-                                       </h5>
-                                       <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                       <form action="update.php" method="POST">
-                                          <div class="mb-3">
-                                             <label for="kode_jurusan" class="form-label">Kode Jurusan</label>
-                                             <input type="hidden" name="id_jur" value="<?= $data['id_jur'] ?>">
-                                             <input type="text" name="kode_jurusan" id="kode_jurusan" class="form-control" value="<?= $data['kode_jurusan'] ?>">
-                                          </div>
-                                          <div class="mb-3">
-                                             <label for="nama_jurusan" class="form-label">Nama Jurusan</label>
-                                             <input type="text" name="nama_jurusan" id="nama_jurusan" class="form-control" value="<?= $data['nama_jurusan'] ?>">
-                                          </div>
-                                          <div class="mb-3">
-                                             <label for="status" class="form-label">Status</label>
-                                             <select name="status" id="status" class="form-select">
-                                                <option selected disabled>Pilih Jurusan</option>
-                                                <option <?= $data['status_jurusan'] == '1' ? 'selected' : '' ?> value="1">Aktif</option>
-                                                <option <?= $data['status_jurusan'] == '0' ? 'selected' : '' ?> value="0">Tidak Aktif</option>
-                                             </select>
-                                          </div>
-                                          <button type="submit" name="simpan" class="btn btn-sm btn-primary">Simpan</button>
-                                          <button type="reset" class="btn btn-sm btn-secondary">Reset</button>
-                                       </form>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                           <!-- End -->
                         <?php
                         endforeach
                         ?>

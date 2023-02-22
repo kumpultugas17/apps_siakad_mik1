@@ -112,20 +112,16 @@ if (!isset($_SESSION['email'])) {
                <div class="card-body px-1">
                   <form action="insert.php" method="POST">
                      <div class="mb-3">
-                        <label for="kode_jurusan" class="form-label">Kode Jurusan</label>
-                        <input type="text" name="kode_jurusan" id="kode_jurusan" class="form-control" placeholder="Masukkan kode jurusan">
+                        <label for="kode_matkul" class="form-label">Kode Jurusan</label>
+                        <input type="text" name="kode_matkul" id="kode_matkul" class="form-control" placeholder="Masukkan kode matakuliah">
                      </div>
                      <div class="mb-3">
-                        <label for="nama_jurusan" class="form-label">Nama Jurusan</label>
-                        <input type="text" name="nama_jurusan" id="nama_jurusan" class="form-control" placeholder="Masukkan nama jurusan">
+                        <label for="nama_matkul" class="form-label">Nama Jurusan</label>
+                        <input type="text" name="nama_matkul" id="nama_matkul" class="form-control" placeholder="Masukkan nama matakuliah">
                      </div>
                      <div class="mb-3">
-                        <label for="status" class="form-label">Status</label>
-                        <select name="status" id="status" class="form-select">
-                           <option selected disabled>Pilih Jurusan</option>
-                           <option value="1">Aktif</option>
-                           <option value="0">Tidak Aktif</option>
-                        </select>
+                        <label for="sks" class="form-label">SKS</label>
+                        <input type="number" name="sks" id="sks" class="form-control" placeholder="Masukkan jumlah SKS">
                      </div>
                      <button type="submit" name="simpan" class="btn btn-sm btn-primary">Simpan</button>
                      <button type="reset" class="btn btn-sm btn-secondary">Reset</button>
@@ -140,9 +136,9 @@ if (!isset($_SESSION['email'])) {
                      <thead class="align-middle table-dark">
                         <tr>
                            <th class="text-center">No</th>
-                           <th>Kode Jurusan</th>
-                           <th>Nama Jurusan</th>
-                           <th class="text-center">Status</th>
+                           <th>Kode</th>
+                           <th>Mata Kuliah</th>
+                           <th class="text-center">SKS</th>
                            <th class="text-center">Aksi</th>
                         </tr>
                      </thead>
@@ -151,51 +147,47 @@ if (!isset($_SESSION['email'])) {
                         require_once '../../config.php';
 
                         $no = 1;
-                        $query = $conn->query("SELECT * FROM jurusan");
+                        $query = $conn->query("SELECT * FROM mata_kuliah");
                         foreach ($query as $data) :
                         ?>
                            <tr>
                               <td class="text center"><?= $no++ ?></td>
-                              <td><?= $data['kode_jurusan'] ?></td>
-                              <td><?= $data['nama_jurusan'] ?></td>
-                              <td class="text-center"><?= $data['status_jurusan'] == '1' ? '<span class="badge text-bg-success">Aktif</span>' : '<span class="badge text-bg-danger">Tidak Aktif</span>' ?></td>
+                              <td><?= $data['kode_matkul'] ?></td>
+                              <td><?= $data['nama_matkul'] ?></td>
+                              <td class="text-center"><?= $data['sks'] ?></td>
                               <td class="text-center">
-                                 <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#edit<?= $data['id_jur'] ?>">
+                                 <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#edit<?= $data['id_matkul'] ?>">
                                     <i class="bi bi-pencil-square"></i>
                                  </button>
-                                 <button class="btn btn-sm btn-danger" onclick="confirmDelete('delete.php?id=<?= $data['id_jur'] ?>')">
+                                 <button class="btn btn-sm btn-danger" onclick="confirmDelete('delete.php?id=<?= $data['id_matkul'] ?>')">
                                     <i class="bi bi-trash3-fill"></i>
                                  </button>
                               </td>
                            </tr>
                            <!-- Modal Edit -->
-                           <div class="modal fade" id="edit<?= $data['id_jur'] ?>" data-bs-backdrop="static" data-bs-keyword="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                           <div class="modal fade" id="edit<?= $data['id_matkul'] ?>" data-bs-backdrop="static" data-bs-keyword="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                               <div class="modal-dialog">
                                  <div class="modal-content">
                                     <div class="modal-header">
                                        <h5 class="modal-title" id="staticBackdropLabel">
-                                          Edit Jurusan
+                                          Edit Matakuliah
                                        </h5>
                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                     </div>
                                     <div class="modal-body">
                                        <form action="update.php" method="POST">
+                                          <input type="hidden" name="id_matkul" value="<?= $data['id_matkul'] ?>">
                                           <div class="mb-3">
-                                             <label for="kode_jurusan" class="form-label">Kode Jurusan</label>
-                                             <input type="hidden" name="id_jur" value="<?= $data['id_jur'] ?>">
-                                             <input type="text" name="kode_jurusan" id="kode_jurusan" class="form-control" value="<?= $data['kode_jurusan'] ?>">
+                                             <label for="kode_matkul" class="form-label">Kode</label>
+                                             <input type="text" name="kode_matkul" id="kode_matkul" class="form-control" value="<?= $data['kode_matkul'] ?>">
                                           </div>
                                           <div class="mb-3">
-                                             <label for="nama_jurusan" class="form-label">Nama Jurusan</label>
-                                             <input type="text" name="nama_jurusan" id="nama_jurusan" class="form-control" value="<?= $data['nama_jurusan'] ?>">
+                                             <label for="nama_matkul" class="form-label">Matakuliah</label>
+                                             <input type="text" name="nama_matkul" id="nama_matkul" class="form-control" value="<?= $data['nama_matkul'] ?>">
                                           </div>
                                           <div class="mb-3">
-                                             <label for="status" class="form-label">Status</label>
-                                             <select name="status" id="status" class="form-select">
-                                                <option selected disabled>Pilih Jurusan</option>
-                                                <option <?= $data['status_jurusan'] == '1' ? 'selected' : '' ?> value="1">Aktif</option>
-                                                <option <?= $data['status_jurusan'] == '0' ? 'selected' : '' ?> value="0">Tidak Aktif</option>
-                                             </select>
+                                             <label for="sks" class="form-label">SKS</label>
+                                             <input type="number" class="form-control" name="sks" id="sks" value="<?= $data['sks'] ?>">
                                           </div>
                                           <button type="submit" name="simpan" class="btn btn-sm btn-primary">Simpan</button>
                                           <button type="reset" class="btn btn-sm btn-secondary">Reset</button>

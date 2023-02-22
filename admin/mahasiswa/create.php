@@ -108,7 +108,7 @@ if (!isset($_SESSION['email'])) {
          <div class="col-12">
             <div class="card p-3 border-0 rounded-4">
                <div class="card-body px-1">
-                  <form class="row g-3" action="insert.php" method="POST">
+                  <form class="row g-3" action="insert.php" method="POST" enctype="multipart/form-data">
                      <div class="col-md-3">
                         <label for="nim" class="form-label">NIM</label>
                         <input type="text" class="form-control" id="nim" name="nim" placeholder="Masukkan NIM Anda">
@@ -169,7 +169,7 @@ if (!isset($_SESSION['email'])) {
                         <label for="nama_ibu" class="form-label">Nama Ibu</label>
                         <input type="text" class="form-control" id="nama_ibu" name="nama_ibu" placeholder="Masukkan Nama Ibu">
                      </div>
-                     <div class="col-md-5">
+                     <div class="col-md-3">
                         <label for="jurusan" class="form-label">Jurusan</label>
                         <select id="jurusan" class="form-select" name="jurusan">
                            <option selected disabled>Pilih...</option>
@@ -186,7 +186,7 @@ if (!isset($_SESSION['email'])) {
                         <label for="tahun_akademik" class="form-label">Tahun Akademik</label>
                         <input type="number" class="form-control" id="tahun_akademik" name="tahun_akademik" placeholder="Contoh 2020">
                      </div>
-                     <div class="col-md-4">
+                     <div class="col-md-3">
                         <label for="status" class="form-label">Status</label>
                         <select id="status" class="form-select" name="status">
                            <option selected disabled>Pilih...</option>
@@ -194,6 +194,10 @@ if (!isset($_SESSION['email'])) {
                            <option value="2">Lulus</option>
                            <option value="0">Tidak Aktif</option>
                         </select>
+                     </div>
+                     <div class="col-md-3">
+                        <label for="avatar" class="form-label">Upload Avatar</label>
+                        <input type="file" name="avatar" id="avatar" class="form-control">
                      </div>
                      <div class="col-12">
                         <button type="submit" class="btn btn-primary" name="simpan">Simpan</button>

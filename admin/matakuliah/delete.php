@@ -4,7 +4,7 @@ if (isset($_GET['id'])) {
    $id = $_GET['id'];
 
    // proses delete
-   $sql = $conn->query("DELETE FROM jurusan WHERE id_jur = '$id'");
+   $sql = $conn->query("DELETE FROM mata_kuliah WHERE id_matkul = '$id'");
 
    // cek apakah data berhasil dihapus
    if ($sql) {
